@@ -29,12 +29,16 @@
 ;; Usage:
 ;;
 ;; (use-package llm-vc-commit
+;;   :repo-scan
+;;   :ensure (:host github :repo "ultronozm/llm-vc-commit.el" :depth nil)
 ;;   :after log-edit
 ;;   :bind (:map log-edit-mode-map
 ;;               ("C-c C-r" . llm-vc-commit-generate-message))
 ;;   :config
 ;;   (setq llm-vc-commit-contribute-file
 ;;         (expand-file-name "CONTRIBUTE" "~/gnu-emacs/"))
+;;   (require 'llm-claude)
+;;   (require 'content-quoter) ; optional
 ;;   (setq llm-vc-commit-model
 ;;         (make-llm-claude
 ;;          :key (exec-path-from-shell-getenv "ANTHROPIC_KEY")
@@ -160,12 +164,13 @@ This handles proper line breaks for ChangeLog-style entries."
 (defun llm-vc-commit-generate-message (&optional arg)
   "Generate or improve a commit message using an LLM.
 
-1. Insert scaffolding from `log-edit-generate-changelog-from-diff`.
+1. Insert scaffolding from `log-edit-generate-changelog-from-diff'.
 
-2. Gather context from *vc-diff* buffer by default.
-   With prefix ARG, also gather context from all visible buffers.
+2. Gather context from *vc-diff* buffer by default.  With prefix ARG,
+   also gather context from all visible buffers provided that the
+   `content-quoter' package is loaded.
 
-3. Combine everything into a prompt and send to `llm-vc-commit-model` via
+3. Combine everything into a prompt and send to `llm-vc-commit-model' via
 `llm-chat-streaming`."
   (interactive "P")
   (unless llm-vc-commit-model
