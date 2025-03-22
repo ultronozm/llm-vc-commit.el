@@ -29,7 +29,6 @@
 ;; Usage:
 ;;
 ;; (use-package llm-vc-commit
-;;   :repo-scan
 ;;   :ensure (:host github :repo "ultronozm/llm-vc-commit.el" :depth nil)
 ;;   :after log-edit
 ;;   :bind (:map log-edit-mode-map
