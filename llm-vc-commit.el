@@ -104,13 +104,17 @@ Otherwise, just collect from the *vc-diff* buffer."
             (diff-buf (get-buffer "*vc-diff*")))
         (when (and visible-buffers diff-buf (not (member diff-buf visible-buffers)))
           (push diff-buf visible-buffers))
-        (if (and visible-buffers (fboundp 'content-quoter-quote-sources))
-            (content-quoter-quote-sources visible-buffers)
+        (if (and visible-buffers (fboundp 'content-quoter--get-content-plists))
+            (content-quoter--format-plists-to-string
+             (content-quoter--get-content-plists visible-buffers)
+             content-quoter-wrapper)
           ""))
     ;; Only use the diff buffer
     (let ((diff-buf (get-buffer "*vc-diff*")))
-      (if (and diff-buf (fboundp 'content-quoter-quote-sources))
-          (content-quoter-quote-sources (list diff-buf))
+      (if (and diff-buf (fboundp 'content-quoter--get-content-plists))
+          (content-quoter--format-plists-to-string
+           (content-quoter--get-content-plists (list diff-buf))
+           content-quoter-wrapper)
         ""))))
 
 (defun llm-vc-commit-extract-commit-messages-section (file-path)
