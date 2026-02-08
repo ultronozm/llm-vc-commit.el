@@ -5,7 +5,7 @@
 ;; Author: Paul D. Nelson <nelson.paul.david@gmail.com>
 ;; Version: 0.1
 ;; URL: https://github.com/ultronozm/llm-vc-commit.el
-;; Package-Requires: ((emacs "27.1") (content-quoter "0.2"))
+;; Package-Requires: ((emacs "27.1") (content-quoter "0.2") (llm "0.24.2"))
 ;; Keywords: convenience, vc
 
 ;; This program is free software; you can redistribute it and/or modify
