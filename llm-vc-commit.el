@@ -70,24 +70,38 @@ This file contains guidelines for commit messages."
 
 (defcustom llm-vc-commit-prompt-addendum
   "Follow these EXACT formatting rules:
-1. Start with a concise, specific summary line (max 50 chars)
-2. For ChangeLog entries, list each file with a comma before the asterisk (like \"* filename.el\")
-3. After the initial file description, put each function/variable on its own line
-4. Each variable/function should be properly indented
-5. ALWAYS use two spaces between sentences in all descriptions
-6. Keep line length under 63 chars (max 78 chars absolute limit)
-5. ALWAYS use two spaces between sentences in all descriptions
-6. Format the message exactly like this example:
+1. Start with a short, imperative summary line (max 50 chars), without a trailing period.
+2. Prefer high-level intent over implementation detail in the summary.
+3. Use line wrapping around 72 chars in body text.
+4. Use two spaces between sentences in body and ChangeLog text.
+5. For ChangeLog entries, use \"* file.el\" (no leading comma).
+6. Group related functions/variables in one parenthesized list, e.g. \"(a, b): ...\".
+7. Avoid one line per symbol when several symbols share the same change type.
+8. Prefer concise outcome language like \"New helper functions.\", \"New tests.\", \"Use them.\".
+9. Output only the commit message with no additional commentary.
 
-Fix parsing issue in regexp handling.  Use two spaces here.  This uses two spaces after periods.
+Format the message exactly like this example:
 
-* some-file.el (function-name): Description of what changed.  Note the two spaces here.  Note the two spaces here.
-(another-function): What changed here.  Always double-space between sentences.
-(some-variable): How this variable changed.
+Respect filename byte limit
 
-* another-file.el (some-function): What changed.  Two spaces after periods.
+Generated filenames now respect filesystem byte limits (typically 255
+bytes per path component).  When a filename would exceed the limit,
+the code progressively shortens it by truncating the author, then the
+title, and finally the author string itself.
 
-Output only the commit message with no additional commentary."
+* library.el (library-filename-max-bytes)
+(library-filename-max-authors): New user options.
+(library--file-name-bytes, library--truncate-to-bytes)
+(library--truncate-to-bytes-with-suffix)
+(library--bounded-pdf-basename): New helper functions.
+(library--generate-filename): Use them.
+
+* library-tests.el: New file.
+(library--bounded-pdf-basename-respects-byte-limit)
+(library--bounded-pdf-basename-uses-et-al-when-needed)
+(library--truncate-to-bytes-with-suffix-respects-max-bytes)
+(library--bounded-pdf-basename-errors-on-impossibly-small-max-bytes):
+New tests."
   "Additional commit message guidance.
 This should provide specific formatting instructions."
   :type 'string
